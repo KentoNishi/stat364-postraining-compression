@@ -20,7 +20,12 @@ class OPTClass(BaseLM):
         self.model_name = args.model
         self.batch_size_per_gpu = 1
        
-        self.model = OPTForCausalLM.from_pretrained(self.model_name, torch_dtype='auto', cache_dir=args.model_path, local_files_only=True)
+        self.model = OPTForCausalLM.from_pretrained(
+            self.model_name,
+            torch_dtype="auto",
+            cache_dir=args.model_path,
+            local_files_only=False,
+        )
         
         self.seqlen = self.model.config.max_position_embeddings
         
@@ -35,7 +40,12 @@ class OPTClass(BaseLM):
         
 
         # pretrained tokenizer for neo is broken for now so just hard-coding this to gpt2
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, use_fast=False, local_files_only = True, cache_dir=os.path.join(os.path.expanduser("~"),'Sparse_NN_shared','LLM','data'))
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.model_name,
+            use_fast=False,
+            local_files_only=False,
+            cache_dir=args.model_path,
+        )
         
         #self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, use_fast=False, local_files_only = True, cache_dir=args.data_path)
         self.vocab_size = self.tokenizer.vocab_size

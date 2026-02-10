@@ -9,7 +9,7 @@ import pandas as pd
 
 
 
-def get_opt(model, path, cached = True):
+def get_opt(model, path, cached = False):
     import torch
     def skip(*args, **kwargs):
         pass
@@ -371,39 +371,39 @@ if __name__ == '__main__':
     
     
     
-    from lambada import *
-    lambada(args)
-    file = open(args.results_path, 'r')
-    rs = [line.rstrip('\n') for line in file][0]
-    results['lambada'] = rs
+    if os.environ.get("ALPS_SKIP_ZEROSHOT", "0") != "1":
+        from lambada import *
+        lambada(args)
+        file = open(args.results_path, 'r')
+        rs = [line.rstrip('\n') for line in file][0]
+        results['lambada'] = rs
 
 
-    from arc import *
-    arc_challenge(args)
-    file = open(args.results_path, 'r')
-    rs = [line.rstrip('\n') for line in file][0]
-    results['arc_challenge'] = rs
-    
-    
-    from piqa import *
-    piqa(args)
-    file = open(args.results_path, 'r')
-    rs = [line.rstrip('\n') for line in file][0]
-    results['piqa'] = rs
+        from arc import *
+        arc_challenge(args)
+        file = open(args.results_path, 'r')
+        rs = [line.rstrip('\n') for line in file][0]
+        results['arc_challenge'] = rs
+        
+        
+        from piqa import *
+        piqa(args)
+        file = open(args.results_path, 'r')
+        rs = [line.rstrip('\n') for line in file][0]
+        results['piqa'] = rs
 
 
-    from arc_easy import *
-    arc_easy(args)
-    file = open(args.results_path, 'r')
-    rs = [line.rstrip('\n') for line in file][0]
-    results['arc_easy'] = rs
+        from arc_easy import *
+        arc_easy(args)
+        file = open(args.results_path, 'r')
+        rs = [line.rstrip('\n') for line in file][0]
+        results['arc_easy'] = rs
 
-    df = pd.DataFrame(results, index=[0])
-    filename = FILE  +'.csv'
-    addr = os.path.join('./results',filename)
-    df.to_csv(addr,index=False,)
-    
-    if os.path.exists(args.results_path):
-        os.remove(args.results_path)
-
+        df = pd.DataFrame(results, index=[0])
+        filename = FILE  +'.csv'
+        addr = os.path.join('./results',filename)
+        df.to_csv(addr,index=False,)
+        
+        if os.path.exists(args.results_path):
+            os.remove(args.results_path)
 
